@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>App Configuration</title>
+  <script src="https://statics.teams.cdn.office.net/sdk/v1.11.0/js/MicrosoftTeams.min.js"></script>
+  <script>
+    microsoftTeams.initialize();
+
+    function saveSettings() {
+      const settings = {
+        contentUrl: document.getElementById("contentUrl").value,
+        entityId: "your-entity-id"
+      };
+      microsoftTeams.settings.setSettings(settings);
+      microsoftTeams.settings.getSettings(function(settings) {
+        console.log(settings);
+      });
+      microsoftTeams.settings.registerOnSaveHandler(function(saveEvent) {
+        saveEvent.notifySuccess();
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Configure Your App</h1>
+  <label for="contentUrl">Content URL:</label>
+  <input type="text" id="contentUrl" value="https://yourwebsite.com/your-tab-content">
+  <button onclick="saveSettings()">Save</button>
+</body>
+</html>
