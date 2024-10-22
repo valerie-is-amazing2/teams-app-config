@@ -1,59 +1,62 @@
+<!DOCTYPE html>
+<html>
 <head>
     <script src="https://res.cdn.office.net/teams-js/2.2.0/js/MicrosoftTeams.min.js" 
       integrity="sha384yBjE++eHeBPzIg+IKl9OHFqMbSdrzY2S/LW3qeitc5vqXewEYRWegByWzBN/chRh" 
-      crossorigin="anonymous" >
+      crossorigin="anonymous">
     </script>
+</head>
 <body>
-    <button onclick="(document.getElementById('icon').src = '/images/iconGray.png'); colorClickGray()">Select Gray</button>
-    <img id="icon" src="/images/teamsIcon.png" alt="icon" style="width:100px" />
-    <button onclick="(document.getElementById('icon').src = '/images/iconRed.png'); colorClickRed()">Select Red</button>
+    <button onclick="selectGray()">Select Gray</button>
+    <button onclick="selectRed()">Select Red</button>
 
     <script>
-        await microsoftTeams.app.initialize();
+        // Initialize the Microsoft Teams SDK
+        microsoftTeams.app.initialize().then(() => {
+            console.log("Microsoft Teams SDK initialized");
+        });
+
+        // Function to save the gray configuration
         let saveGray = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
-                const configPromise = pages.config.setConfig({
-                    websiteUrl: "https://example.com",
-                    contentUrl: "https://example.com/gray",
+                const configPromise = microsoftTeams.pages.config.setConfig({
+                    websiteUrl: "https://google.com",
+                    contentUrl: "https://www.google.com/imghp",
                     entityId: "grayIconTab",
                     suggestedDisplayName: "MyNewTab"
                 });
-                configPromise.
-                    then((result) => {saveEvent.notifySuccess()}).
-                    catch((error) => {saveEvent.notifyFailure("failure message")});
+                configPromise
+                    .then((result) => { saveEvent.notifySuccess(); })
+                    .catch((error) => { saveEvent.notifyFailure("failure message"); });
             });
-        }
+        };
 
+        // Function to save the red configuration
         let saveRed = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
-                const configPromise = pages.config.setConfig({
-                    websiteUrl: "https://example.com",
-                    contentUrl: "https://example.com/red",
+                const configPromise = microsoftTeams.pages.config.setConfig({
+                    websiteUrl: "https://google.com",
+                    contentUrl: "https://www.google.com/imghp",
                     entityId: "redIconTab",
                     suggestedDisplayName: "MyNewTab"
                 });
-                configPromise.
-                    then((result) => {saveEvent.notifySuccess();}).
-                    catch((error) => {saveEvent.notifyFailure("failure message")});
+                configPromise
+                    .then((result) => { saveEvent.notifySuccess(); })
+                    .catch((error) => { saveEvent.notifyFailure("failure message"); });
             });
-        }
+        };
 
-        let gr = document.getElementById("gray").style;
-        let rd = document.getElementById("red").style;
-
-        const colorClickGray = () => {
-            gr.display = "block";
-            rd.display = "none";
+        // Function to handle the selection of the gray option
+        const selectGray = () => {
             microsoftTeams.pages.config.setValidityState(true);
-            saveGray()
-        }
+            saveGray();
+        };
 
-        const colorClickRed = () => {
-            rd.display = "block";
-            gr.display = "none";
+        // Function to handle the selection of the red option
+        const selectRed = () => {
             microsoftTeams.pages.config.setValidityState(true);
             saveRed();
-        }
+        };
     </script>
-    ...
 </body>
+</html>
