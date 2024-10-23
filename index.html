@@ -65,7 +65,7 @@
         const goBack = () => {
             console.log("Attempting to return focus...");
             try {
-                microsoftTeams.pages.returnFocus();
+                microsoftTeams.pages.navigateBack();
                 console.log("Returned focus successfully.");
             } catch (error) {
                 console.error("Error returning focus:", error);
