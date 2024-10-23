@@ -9,12 +9,14 @@
 <body>
     <button onclick="selectGray()">Select Gray</button>
     <button onclick="selectRed()">Select Red</button>
-    <button onclick="goBack()">Back</button>
+    <button onclick="goBack()">Back</button> <!-- Added back button -->
 
     <script>
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
             console.log("Microsoft Teams SDK initialized");
+        }).catch((error) => {
+            console.error("Error initializing Microsoft Teams SDK:", error);
         });
 
         // Function to save the gray configuration
@@ -61,12 +63,12 @@
 
         // Function to handle the back navigation
         const goBack = () => {
-            microsoftTeams.pages.navigateBack().then((success) => {
+            microsoftTeams.pages.returnFocus().then((success) => {
                 if (!success) {
-                    console.log("No previous tab to navigate back to.");
+                    console.log("No previous context to return focus to.");
                 }
             }).catch((error) => {
-                console.error("Error navigating back:", error);
+                console.error("Error returning focus:", error);
             });
         };
     </script>
