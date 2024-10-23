@@ -9,6 +9,7 @@
 <body>
     <button onclick="selectGray()">Select Gray</button>
     <button onclick="selectRed()">Select Red</button>
+    <button onclick="goBack()">Back</button>
 
     <script>
         // Initialize the Microsoft Teams SDK
@@ -56,6 +57,17 @@
         const selectRed = () => {
             microsoftTeams.pages.config.setValidityState(true);
             saveRed();
+        };
+
+        // Function to handle the back navigation
+        const goBack = () => {
+            microsoftTeams.pages.navigateBack().then((success) => {
+                if (!success) {
+                    console.log("No previous tab to navigate back to.");
+                }
+            }).catch((error) => {
+                console.error("Error navigating back:", error);
+            });
         };
     </script>
 </body>
