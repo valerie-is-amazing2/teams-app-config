@@ -9,19 +9,22 @@
 <body>
     <button onclick="selectGray()">Select Gray</button>
     <button onclick="selectRed()">Select Red</button>
+    <button onclick="backButtonNavigation()">Back</button> <!-- Updated back button -->
 
     <script>
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
             console.log("Microsoft Teams SDK initialized");
+        }).catch((error) => {
+            console.error("Error initializing Microsoft Teams SDK:", error);
         });
 
         // Function to save the gray configuration
         let saveGray = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
                 const configPromise = microsoftTeams.pages.config.setConfig({
-                    websiteUrl: "https://google.com",
-                    contentUrl: "https://www.google.com/imghp",
+                    websiteUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
+                    contentUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     entityId: "grayIconTab",
                     suggestedDisplayName: "MyNewTab"
                 });
@@ -35,8 +38,8 @@
         let saveRed = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
                 const configPromise = microsoftTeams.pages.config.setConfig({
-                    websiteUrl: "https://google.com",
-                    contentUrl: "https://www.google.com/imghp",
+                    websiteUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
+                    contentUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     entityId: "redIconTab",
                     suggestedDisplayName: "MyNewTab"
                 });
@@ -56,6 +59,15 @@
         const selectRed = () => {
             microsoftTeams.pages.config.setValidityState(true);
             saveRed();
+        };
+
+        // Back button navigation
+        const backButtonNavigation = () => {
+            if (microsoftTeams.pages.backStack.isSupported()) {
+                microsoftTeams.pages.backStack.navigateBack();
+            } else {
+                console.log("Capability is not supported");
+            }
         };
     </script>
 </body>
