@@ -63,13 +63,13 @@
 
         // Function to handle the back navigation
         const goBack = () => {
-            microsoftTeams.pages.returnFocus().then((success) => {
-                if (!success) {
-                    console.log("No previous context to return focus to.");
-                }
-            }).catch((error) => {
+            console.log("Attempting to return focus...");
+            try {
+                microsoftTeams.pages.returnFocus();
+                console.log("Returned focus successfully.");
+            } catch (error) {
                 console.error("Error returning focus:", error);
-            });
+            }
         };
     </script>
 </body>
