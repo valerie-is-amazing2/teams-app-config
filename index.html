@@ -9,7 +9,7 @@
 <body>
     <button onclick="selectGray()">Select Gray</button>
     <button onclick="selectRed()">Select Red</button>
-    <button onclick="goBack()">Back</button> <!-- Added back button -->
+    <button onclick="backButtonNavigation()">Back</button> <!-- Updated back button -->
 
     <script>
         // Initialize the Microsoft Teams SDK
@@ -61,14 +61,12 @@
             saveRed();
         };
 
-        // Function to handle the back navigation
-        const goBack = () => {
-            console.log("Attempting to return focus...");
-            try {
-                microsoftTeams.pages.navigateBack();
-                console.log("Returned focus successfully.");
-            } catch (error) {
-                console.error("Error returning focus:", error);
+        // Back button navigation
+        const backButtonNavigation = () => {
+            if (microsoftTeams.pages.backStack.isSupported()) {
+                microsoftTeams.pages.backStack.navigateBack();
+            } else {
+                console.log("Capability is not supported");
             }
         };
     </script>
