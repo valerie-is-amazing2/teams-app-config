@@ -20,30 +20,6 @@
             console.error("Error initializing Microsoft Teams SDK:", error);
         });
 
-        // Function to authenticate the user
-        const authenticateUser = () => {
-            microsoftTeams.authentication.getAuthToken({
-                successCallback: (token) => {
-                    console.log("Authentication successful, token acquired:", token);
-                    // Use the token to authenticate API requests
-                },
-                failureCallback: (error) => {
-                    console.error("Authentication failed:", error);
-                    microsoftTeams.authentication.authenticate({
-                        url: "https://your-authentication-url",
-                        width: 600,
-                        height: 535,
-                        successCallback: (result) => {
-                            console.log("Authentication successful:", result);
-                        },
-                        failureCallback: (reason) => {
-                            console.error("Authentication failed:", reason);
-                        }
-                    });
-                }
-            });
-        };
-
         // Function to save the gray configuration
         let saveGray = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
@@ -86,7 +62,7 @@
             saveRed();
         };
 
-        // Navigate to the "Posts" tab and post a message to the channel
+        // Navigate to the "Posts" tab and send an Adaptive Card to the channel
         const navigateToPostsTab = () => {
             microsoftTeams.getContext((context) => {
                 const channelId = context.channelId;
@@ -95,32 +71,56 @@
 
                 const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
                 console.log("Constructed postsTabUrl:", postsTabUrl);
+
                 microsoftTeams.executeDeepLink(postsTabUrl);
-                // console.log("Attempted to navigate to the Posts tab.");
-                // postMessageToChannel("Navigated to the Posts tab!");
+                console.log("Attempted to navigate to the Posts tab.");
+                sendAdaptiveCard(channelId, teamId, tenantId, context.entityId);
             });
         };
 
-        // Function to post a message to the channel
-        const postMessageToChannel = (message) => {
-            microsoftTeams.getContext((context) => {
-                const channelId = context.channelId;
-                const teamId = context.teamId;
-                const messagePayload = {
-                    body: {
-                        content: message
+        // Function to send an Adaptive Card with a deep link button
+        const sendAdaptiveCard = (channelId, teamId, tenantId, entityId) => {
+            const tabUrl = `https://teams.microsoft.com/l/entity/${entityId}/${channelId}?groupId=${teamId}&tenantId=${tenantId}`;
+            console.log("AdaptiveTabUrl:", tabUrl);
+            const card = {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.2",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "You pressed back to posts tab! Click the button to go back to the tab.",
+                        "weight": "Bolder",
+                        "size": "Medium"
+                    },
+                    {
+                        "type": "ActionSet",
+                        "actions": [
+                            {
+                                "type": "Action.OpenUrl",
+                                "title": "View Tab",
+                                "url": tabUrl
+                            }
+                        ]
                     }
-                };
+                ]
+            };
 
-                microsoftTeams.teams.sendMessageToChannel({
-                    teamId: teamId,
-                    channelId: channelId,
-                    message: messagePayload
-                }).then((result) => {
-                    console.log("Message posted to the channel successfully.");
-                }).catch((error) => {
-                    console.error("Error posting message to the channel:", error);
-                });
+            const messagePayload = {
+                body: {
+                    contentType: "application/vnd.microsoft.card.adaptive",
+                    content: card
+                }
+            };
+
+            microsoftTeams.teams.sendMessageToChannel({
+                teamId: teamId,
+                channelId: channelId,
+                message: messagePayload
+            }).then((result) => {
+                console.log("Adaptive Card posted to the channel successfully.");
+            }).catch((error) => {
+                console.error("Error posting Adaptive Card to the channel:", error);
             });
         };
     </script>
