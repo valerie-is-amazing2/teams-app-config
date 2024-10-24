@@ -70,11 +70,13 @@
 
                 const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
 
-                microsoftTeams.executeDeepLink(postsTabUrl).then((success) => {
-                    console.log("Navigated to the Posts tab successfully.");
-                    postMessageToChannel("Navigated to the Posts tab!");
-                }).catch((error) => {
-                    console.error("Error navigating to the Posts tab:", error);
+                microsoftTeams.executeDeepLink(postsTabUrl, (success) => {
+                    if (success) {
+                        console.log("Navigated to the Posts tab successfully.");
+                        postMessageToChannel("Navigated to the Posts tab!");
+                    } else {
+                        console.error("Error navigating to the Posts tab.");
+                    }
                 });
             });
         };
