@@ -9,7 +9,7 @@
 <body>
     <button onclick="selectGray()">Select Gray</button>
     <button onclick="selectRed()">Select Red</button>
-    <button onclick="backButtonNavigation()">Back</button> <!-- Updated back button -->
+    <button onclick="navigateToPostsTab()">Back</button> <!-- Updated back button -->
 
     <script>
         // Initialize the Microsoft Teams SDK
@@ -61,22 +61,22 @@
             saveRed();
         };
 
-        // Back button navigation and post a message to the channel
-        const backButtonNavigation = () => {
-            if (microsoftTeams.pages.backStack.isSupported()) {
-                microsoftTeams.pages.backStack.navigateBack().then((success) => {
-                    if (success) {
-                        console.log("Navigated back successfully.");
-                        postMessageToChannel("Navigated back to the home channel!");
-                    } else {
-                        console.log("No previous context to navigate back to.");
-                    }
+        // Navigate to the "Posts" tab and post a message to the channel
+        const navigateToPostsTab = () => {
+            microsoftTeams.getContext((context) => {
+                const channelId = context.channelId;
+                const teamId = context.teamId;
+                const tenantId = context.tid; // Tenant ID
+
+                const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
+
+                microsoftTeams.executeDeepLink(postsTabUrl).then((success) => {
+                    console.log("Navigated to the Posts tab successfully.");
+                    postMessageToChannel("Navigated to the Posts tab!");
                 }).catch((error) => {
-                    console.error("Error navigating back:", error);
+                    console.error("Error navigating to the Posts tab:", error);
                 });
-            } else {
-                console.log("Capability is not supported");
-            }
+            });
         };
 
         // Function to post a message to the channel
