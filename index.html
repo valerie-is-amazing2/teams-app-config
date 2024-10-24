@@ -61,13 +61,45 @@
             saveRed();
         };
 
-        // Back button navigation
+        // Back button navigation and post a message to the channel
         const backButtonNavigation = () => {
             if (microsoftTeams.pages.backStack.isSupported()) {
-                microsoftTeams.pages.backStack.navigateBack();
+                microsoftTeams.pages.backStack.navigateBack().then((success) => {
+                    if (success) {
+                        console.log("Navigated back successfully.");
+                        postMessageToChannel("Navigated back to the home channel!");
+                    } else {
+                        console.log("No previous context to navigate back to.");
+                    }
+                }).catch((error) => {
+                    console.error("Error navigating back:", error);
+                });
             } else {
                 console.log("Capability is not supported");
             }
+        };
+
+        // Function to post a message to the channel
+        const postMessageToChannel = (message) => {
+            microsoftTeams.getContext((context) => {
+                const channelId = context.channelId;
+                const teamId = context.teamId;
+                const messagePayload = {
+                    body: {
+                        content: message
+                    }
+                };
+
+                microsoftTeams.teams.sendMessageToChannel({
+                    teamId: teamId,
+                    channelId: channelId,
+                    message: messagePayload
+                }).then((result) => {
+                    console.log("Message posted to the channel successfully.");
+                }).catch((error) => {
+                    console.error("Error posting message to the channel:", error);
+                });
+            });
         };
     </script>
 </body>
