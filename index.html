@@ -94,7 +94,7 @@
                 const tenantId = context.tid; // Tenant ID
 
                 const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
-
+                console.log("Constructed postsTabUrl:", postsTabUrl);
                 microsoftTeams.executeDeepLink(postsTabUrl);
                 // console.log("Attempted to navigate to the Posts tab.");
                 // postMessageToChannel("Navigated to the Posts tab!");
