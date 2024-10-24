@@ -15,9 +15,34 @@
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
             console.log("Microsoft Teams SDK initialized");
+            authenticateUser();
         }).catch((error) => {
             console.error("Error initializing Microsoft Teams SDK:", error);
         });
+
+        // Function to authenticate the user
+        const authenticateUser = () => {
+            microsoftTeams.authentication.getAuthToken({
+                successCallback: (token) => {
+                    console.log("Authentication successful, token acquired:", token);
+                    // Use the token to authenticate API requests
+                },
+                failureCallback: (error) => {
+                    console.error("Authentication failed:", error);
+                    microsoftTeams.authentication.authenticate({
+                        url: "https://your-authentication-url",
+                        width: 600,
+                        height: 535,
+                        successCallback: (result) => {
+                            console.log("Authentication successful:", result);
+                        },
+                        failureCallback: (reason) => {
+                            console.error("Authentication failed:", reason);
+                        }
+                    });
+                }
+            });
+        };
 
         // Function to save the gray configuration
         let saveGray = () => {
@@ -71,8 +96,8 @@
                 const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
 
                 microsoftTeams.executeDeepLink(postsTabUrl);
-                console.log("Attempted to navigate to the Posts tab.");
-                postMessageToChannel("Navigated to the Posts tab!");
+                // console.log("Attempted to navigate to the Posts tab.");
+                // postMessageToChannel("Navigated to the Posts tab!");
             });
         };
 
