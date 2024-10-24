@@ -7,8 +7,8 @@
     </script>
 </head>
 <body>
-    <button onclick="selectGray()">Select Gray</button>
-    <button onclick="selectRed()">Select Red</button>
+    <button onclick="selectGray()">Select Personal</button>
+    <button onclick="selectRed()">Select Datadog</button>
     <button onclick="navigateToPostsTab()">Back</button> <!-- Updated back button -->
 
     <script>
@@ -26,7 +26,7 @@
                     websiteUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     contentUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     entityId: "grayIconTab",
-                    suggestedDisplayName: "MyNewTab"
+                    suggestedDisplayName: "Personal Tab"
                 });
                 configPromise
                     .then((result) => { saveEvent.notifySuccess(); })
@@ -41,7 +41,7 @@
                     websiteUrl: "https://app.datad0g.com/ms_teams/config",
                     contentUrl: "https://app.datad0g.com/ms_teams/config",
                     entityId: "redIconTab",
-                    suggestedDisplayName: "MyNewTab"
+                    suggestedDisplayName: "Datadog Tab"
                 });
                 configPromise
                     .then((result) => { saveEvent.notifySuccess(); })
@@ -70,14 +70,9 @@
 
                 const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
 
-                microsoftTeams.executeDeepLink(postsTabUrl, (success) => {
-                    if (success) {
-                        console.log("Navigated to the Posts tab successfully.");
-                        postMessageToChannel("Navigated to the Posts tab!");
-                    } else {
-                        console.error("Error navigating to the Posts tab.");
-                    }
-                });
+                microsoftTeams.executeDeepLink(postsTabUrl);
+                console.log("Attempted to navigate to the Posts tab.");
+                postMessageToChannel("Navigated to the Posts tab!");
             });
         };
 
