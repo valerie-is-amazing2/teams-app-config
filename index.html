@@ -25,7 +25,6 @@
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
             console.log("Microsoft Teams SDK initialized");
-            authenticateUser();
         }).catch((error) => {
             console.error("Error initializing Microsoft Teams SDK:", error);
         });
@@ -83,54 +82,7 @@
                 console.log("Constructed postsTabUrl:", postsTabUrl);
 
                 microsoftTeams.executeDeepLink(postsTabUrl);
-                console.log("Attempted to navigate to the Posts tab.");
-                sendAdaptiveCard(channelId, teamId, tenantId, context.entityId);
-            });
-        };
-
-        // Function to send an Adaptive Card with a deep link button
-        const sendAdaptiveCard = (channelId, teamId, tenantId, entityId) => {
-            const tabUrl = `https://teams.microsoft.com/l/entity/${entityId}/${channelId}?groupId=${teamId}&tenantId=${tenantId}`;
-            console.log("AdaptiveTabUrl:", tabUrl);
-            const card = {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "type": "AdaptiveCard",
-                "version": "1.2",
-                "body": [
-                    {
-                        "type": "TextBlock",
-                        "text": "You pressed back to posts tab! Click the button to go back to the tab.",
-                        "weight": "Bolder",
-                        "size": "Medium"
-                    },
-                    {
-                        "type": "ActionSet",
-                        "actions": [
-                            {
-                                "type": "Action.OpenUrl",
-                                "title": "View Tab",
-                                "url": tabUrl
-                            }
-                        ]
-                    }
-                ]
-            };
-
-            const messagePayload = {
-                body: {
-                    contentType: "application/vnd.microsoft.card.adaptive",
-                    content: card
-                }
-            };
-
-            microsoftTeams.teams.sendMessageToChannel({
-                teamId: teamId,
-                channelId: channelId,
-                message: messagePayload
-            }).then((result) => {
-                console.log("Adaptive Card posted to the channel successfully.");
-            }).catch((error) => {
-                console.error("Error posting Adaptive Card to the channel:", error);
+                console.log("Attempting to navigate to the Posts tab.");
             });
         };
     </script>
