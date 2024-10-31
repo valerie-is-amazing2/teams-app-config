@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://res.cdn.office.net/teams-js/2.2.0/js/MicrosoftTeams.min.js" 
-      integrity="sha384yBjE++eHeBPzIg+IKl9OHFqMbSdrzY2S/LW3qeitc5vqXewEYRWegByWzBN/chRh" 
+    <script src="https://res.cdn.office.net/teams-js/2.2.0/js/MicrosoftTeams.min.js"
+      integrity="sha384yBjE++eHeBPzIg+IKl9OHFqMbSdrzY2S/LW3qeitc5vqXewEYRWegByWzBN/chRh"
       crossorigin="anonymous">
     </script>
 </head>
@@ -14,6 +14,13 @@
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
             console.log("Microsoft Teams SDK initialized");
+        });
+
+        // Get user context
+        microsoftTeams.getContext((context) => {
+            const userId = context.userId; // Microsoft user ID
+            const email = context.userPrincipalName; // Email
+            console.log("userId: " + userId + "email: " + email);
         });
 
         // Function to save the gray configuration
