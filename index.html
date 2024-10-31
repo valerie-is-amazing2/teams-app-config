@@ -7,10 +7,20 @@
     </script>
 </head>
 <body>
-    <button onclick="selectGray()">Select Gray</button>
-    <button onclick="selectRed()">Select Red</button>
-    <button onclick="backButtonNavigation()">Back</button> <!-- Updated back button -->
+    <button onclick="selectGray()">Select Personal</button>
+    <button onclick="selectRed()">Select Datadog</button>
+    <button onclick="navigateToPostsTab()">Back</button> <!-- Updated back button -->
 
+    <label for="numberSelect">Severity:</label>
+    <select id="numberSelect" name="numberSelect">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+
+    <iframe src="https://dd.datad0g.com/graph/embed?token=dc56971eb4ec414570663092e3166c11020a7f13adc0f64c5b1ad825dcd359f9&height=300&width=600&legend=true" width="600" height="300" frameborder="0"></iframe>
+    <iframe src="https://dd.datad0g.com/incidents/new" width="600" height="300" frameborder="0"></iframe>
     <script>
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
@@ -26,7 +36,7 @@
                     websiteUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     contentUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
                     entityId: "grayIconTab",
-                    suggestedDisplayName: "MyNewTab"
+                    suggestedDisplayName: "Personal Tab"
                 });
                 configPromise
                     .then((result) => { saveEvent.notifySuccess(); })
@@ -38,10 +48,10 @@
         let saveRed = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
                 const configPromise = microsoftTeams.pages.config.setConfig({
-                    websiteUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
-                    contentUrl: "https://valerie-is-amazing2.github.io/teams-app-config/",
+                    websiteUrl: "https://app.datad0g.com/ms_teams/config",
+                    contentUrl: "https://app.datad0g.com/ms_teams/config",
                     entityId: "redIconTab",
-                    suggestedDisplayName: "MyNewTab"
+                    suggestedDisplayName: "Datadog Tab"
                 });
                 configPromise
                     .then((result) => { saveEvent.notifySuccess(); })
@@ -61,13 +71,19 @@
             saveRed();
         };
 
-        // Back button navigation
-        const backButtonNavigation = () => {
-            if (microsoftTeams.pages.backStack.isSupported()) {
-                microsoftTeams.pages.backStack.navigateBack();
-            } else {
-                console.log("Capability is not supported");
-            }
+        // Navigate to the "Posts" tab and send an Adaptive Card to the channel
+        const navigateToPostsTab = () => {
+            microsoftTeams.getContext((context) => {
+                const channelId = context.channelId;
+                const teamId = context.teamId;
+                const tenantId = context.tid; // Tenant ID
+
+                const postsTabUrl = `https://teams.microsoft.com/l/channel/${channelId}/General?groupId=${teamId}&tenantId=${tenantId}`;
+                console.log("Constructed postsTabUrl:", postsTabUrl);
+
+                microsoftTeams.executeDeepLink(postsTabUrl);
+                console.log("Attempting to navigate to the Posts tab.");
+            });
         };
     </script>
 </body>
