@@ -19,6 +19,8 @@
         <option value="4">4</option>
     </select>
 
+    <button onclick="startAuthRedirect()">Login to Datadog</button>
+
     <iframe src="https://dd.datad0g.com/graph/embed?token=dc56971eb4ec414570663092e3166c11020a7f13adc0f64c5b1ad825dcd359f9&height=300&width=600&legend=true" width="600" height="300" frameborder="0"></iframe>
     <iframe src="https://dd.datad0g.com/incidents/new" width="600" height="300" frameborder="0"></iframe>
     <script>
@@ -27,13 +29,6 @@
             console.log("Microsoft Teams SDK initialized");
         }).catch((error) => {
             console.error("Error initializing Microsoft Teams SDK:", error);
-        });
-
-        // Get user context
-        microsoftTeams.getContext((context) => {
-            const userId = context.userId; // Microsoft user ID
-            const email = context.userPrincipalName; // Email
-            console.log("userId: " + userId + "email: " + email);
         });
 
         // Function to save the gray configuration
@@ -92,6 +87,17 @@
                 console.log("Attempting to navigate to the Posts tab.");
             });
         };
+
+        const startAuthRedirect = () => {
+            console.log("starting auth redirect");
+            microsoftTeams.getContext((context) => {
+                const tenantId = context.tid;
+                const ddogAuthUrl = `https://app.datad0g.com/auth/integration/microsoft-teams/user-consent/begin?` +
+                    `tenant=${tenantId}`;
+                console.log("ddogAuthUrl: " + ddogAuthUrl);
+                window.location.href = ddogAuthUrl;
+            });
+        }
     </script>
 </body>
 </html>
