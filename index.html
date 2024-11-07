@@ -9,6 +9,7 @@
 <body>
     <button onclick="selectGray()">Select Personal</button>
     <button onclick="selectRed()">Select Datadog</button>
+    <button onclick="selectGreen()">Navigate to incident declaration page</button>
     <button onclick="navigateToPostsTab()">Back</button> <!-- Updated back button -->
 
     <label for="numberSelect">Severity:</label>
@@ -61,6 +62,21 @@
             });
         };
 
+                // Function to save the green configuration
+                let saveGreen = () => {
+            microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+                const configPromise = microsoftTeams.pages.config.setConfig({
+                    websiteUrl: "https://dd-1a87598f7e0a6677ae6db36970047805.datad0g.com/incidents/msteams/declaration",
+                    contentUrl: "https://dd-1a87598f7e0a6677ae6db36970047805.datad0g.com/incidents/msteams/declaration",
+                    entityId: "incidentDeclarationTab",
+                    suggestedDisplayName: "Datadog Tab"
+                });
+                configPromise
+                    .then((result) => { saveEvent.notifySuccess(); })
+                    .catch((error) => { saveEvent.notifyFailure("failure message"); });
+            });
+        };
+
         // Function to handle the selection of the gray option
         const selectGray = () => {
             microsoftTeams.pages.config.setValidityState(true);
@@ -71,6 +87,12 @@
         const selectRed = () => {
             microsoftTeams.pages.config.setValidityState(true);
             saveRed();
+        };
+
+        // Function to handle the selection of the red option
+        const selectGreen = () => {
+            microsoftTeams.pages.config.setValidityState(true);
+            saveGreen();
         };
 
         // Navigate to the "Posts" tab and send an Adaptive Card to the channel
