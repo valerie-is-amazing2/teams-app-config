@@ -91,6 +91,8 @@
         const startAuthRedirect = () => {
             console.log("starting auth redirect with pop up");
             microsoftTeams.getContext((context) => {
+                const msUserId = context.user.id;
+                console.log("ms user id: " + msUserId);
                 const tenantId = context.tid;
                 const ddogAuthUrl = `https://dd.datad0g.com/auth/integration/microsoft-teams/user-consent/begin?` +
                     `tenant=${tenantId}`;
