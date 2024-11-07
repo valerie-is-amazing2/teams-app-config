@@ -93,6 +93,8 @@
             microsoftTeams.getContext((context) => {
                 const msUserId = context.user.id;
                 console.log("ms user id: " + msUserId);
+                console.log(context.user);
+                console.log(context);
                 const tenantId = context.tid;
                 const ddogAuthUrl = `https://dd.datad0g.com/auth/integration/microsoft-teams/user-consent/begin?` +
                     `tenant=${tenantId}`;
