@@ -101,11 +101,13 @@
                     height: 535})
                 .then((result) => {
                     console.log("Login succeeded: " + result);
+                    location.reload();
                 })
                 .catch((reason) => {
                     console.log("Login failed: " + reason);
                 });
             });
+            location.reload();
         }
     </script>
 </body>
