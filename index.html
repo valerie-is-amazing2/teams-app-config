@@ -7,23 +7,11 @@
     </script>
 </head>
 <body>
-    <button onclick="selectGray()">Select Personal</button>
-    <button onclick="selectRed()">Select Datadog</button>
-    <button onclick="selectGreen()">Navigate to incident declaration page</button>
+    <button onclick="selectRed()">Navigate to incident declaration page</button>
+    <button onclick="selectGreen()">Retrieve your auth token</button>
     <button onclick="navigateToPostsTab()">Back</button> <!-- Updated back button -->
 
-    <label for="numberSelect">Severity:</label>
-    <select id="numberSelect" name="numberSelect">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
-
     <button onclick="startAuthRedirect()">Login to Datadog</button>
-
-    <iframe src="https://dd.datad0g.com/graph/embed?token=dc56971eb4ec414570663092e3166c11020a7f13adc0f64c5b1ad825dcd359f9&height=300&width=600&legend=true" width="600" height="300" frameborder="0"></iframe>
-    <iframe src="https://dd.datad0g.com/incidents/new" width="600" height="300" frameborder="0"></iframe>
     <script>
         // Initialize the Microsoft Teams SDK
         microsoftTeams.app.initialize().then(() => {
@@ -51,8 +39,8 @@
         let saveRed = () => {
             microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
                 const configPromise = microsoftTeams.pages.config.setConfig({
-                    websiteUrl: "https://app.datad0g.com/ms_teams/config",
-                    contentUrl: "https://app.datad0g.com/ms_teams/config",
+                    websiteUrl: "https://dd-fe4705fb60390fd85f370b7d77a796bf.datad0g.com/incidents/msteams/declaration",
+                    contentUrl: "https://dd-fe4705fb60390fd85f370b7d77a796bf.datad0g.com/incidents/msteams/declaration",
                     entityId: "redIconTab",
                     suggestedDisplayName: "Datadog Tab"
                 });
